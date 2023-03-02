@@ -1,4 +1,4 @@
-CPATH='".;lib/hamcrest-core-1.3.jar;lib/junit-4.13.2.jar"'
+CPATH='.;lib/hamcrest-core-1.3.jar;lib/junit-4.13.2.jar'
 
 rm -rf student-submission
 git clone $1 student-submission
@@ -11,10 +11,14 @@ else echo "Cannot find ListExamples.java"
 fi
 
 cp ../TestListExamples.java ./
+cp -r ../lib ./
 javac -cp $CPATH *.java 2> javac-errors.txt
 if [[ $? -ne 0 ]]
 then echo "error in compile"
 else echo "Compiled successfully!!"
 fi 
 
-java -cp $CPATH org.junit.runner.JUnitCore TestListExamples 2> java-errors.txt
+java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > java-errors.txt
+
+grep "Tests run:" java-errors.txt > errors.txt
+cat errors.txt
